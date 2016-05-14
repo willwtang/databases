@@ -4,7 +4,7 @@ module.exports = {
   messages: {
     get: function (callback) {
       var mysqlQueryString = 'SELECT users.userName, messages.messageText, messages.messageSentTime, rooms.roomName FROM messages INNER JOIN users ON messages.userID_Users = users.userID INNER JOIN rooms ON messages.roomID_Rooms = rooms.roomID';
-      db.query({sql: mysqlQueryString, timeout: 40000}, function(err, result, field) {
+      db.connection.query({sql: mysqlQueryString, timeout: 40000}, function(err, result, field) {
         if (err) {
           callback(err);
         } else {
@@ -13,7 +13,16 @@ module.exports = {
         }
       });
     }, // a function which produces all the messages
-    post: function () {} // a function which can be used to insert a message into the database
+    post: function (json, callback) {
+      var userName = json.userName;
+      var message = json.message;
+      var roomname = json.roomname;
+      var userNameInsert = 'INSERT IGNORE '
+      var roomIDInsert = 'INSERT IGNORE '
+      var getUserNameID = ''
+      var getRoomID = 'SELECT '
+      var messageInsert = ''
+    } // a function which can be used to insert a message into the database
   },
 
   users: {

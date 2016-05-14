@@ -3,7 +3,7 @@ var models = require('../models');
 module.exports = {
   messages: {
     get: function (req, res) {
-      models.get(function(err, result) {
+      models.messages.get(function(err, result) {
         if (!err) {
           res.responseText(result);
         }
@@ -20,3 +20,25 @@ module.exports = {
   }
 };
 
+// CREATE TABLE rooms (
+//  roomID int NOT NULL AUTO_INCREMENT
+//  ,roomName varchar(30)
+//  ,PRIMARY KEY (roomID)
+// );
+
+// CREATE TABLE users (
+//  userID int NOT NULL AUTO_INCREMENT
+//  ,userName varchar(30)
+//  ,PRIMARY KEY (userID)
+// );
+
+// CREATE TABLE messages (
+//   messageID int NOT NULL AUTO_INCREMENT
+//   ,messageText varchar(140)
+//   ,messageSentTime TIMESTAMP
+//   ,roomID_Rooms int
+//   ,userID_Users int
+//   ,FOREIGN KEY (roomID_Rooms) REFERENCES rooms(roomID)
+//   ,FOREIGN KEY (userID_Users) REFERENCES users(userID)
+//   ,PRIMARY KEY (messageID)
+// );
