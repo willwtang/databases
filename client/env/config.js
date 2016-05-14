@@ -12,7 +12,7 @@ if (!/(&|\?)username=/.test(window.location.search)) {
   $.ajax({
     url: 'http://127.0.0.1:3000/classes/users/',
     type: 'POST',
-    data: JSON.stringify({username: 'testing123'}),
+    data: JSON.stringify({username: newSearch.slice(9)}),
     success: function(data) { console.log('success', data); },
     error: function(data) { console.log('failure', data); }
   });

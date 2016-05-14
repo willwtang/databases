@@ -1,20 +1,19 @@
 var db = require('../db');
-var Promise = require('bluebird');  
 module.exports = {
   messages: {
     get: function (callback) {
-      var mysqlQueryString = 'SELECT users.userName, messages.messageText, messages.messageSentTime, rooms.roomName FROM messages INNER JOIN users ON messages.userID_Users = users.userID INNER JOIN rooms ON messages.roomID_Rooms = rooms.roomID';
-      var mysqlQueryString = 'SELECT messages.messageText FROM messages';
+      var mysqlQueryString = 'SELECT users.userName, messages.messageText, messages.messageSentTime, rooms.roomName, messages.messageID FROM messages INNER JOIN users ON messages.userID_Users = users.userID INNER JOIN rooms ON messages.roomID_Rooms = rooms.roomID';
+      // var mysqlQueryString = 'SELECT messages.messageText FROM messages';
       db.connection.query({sql: mysqlQueryString, timeout: 40000}, function(err, result, field) {
         if (err) {
           callback(err);
         } else {
-          console.log(result);
           callback(null, result);
         }
       });
     }, // a function which produces all the messages
     post: function (body, callback) {
+      console.log(body);
       var userName = body.username;
       var message = body.message;
       var roomname = body.roomname;

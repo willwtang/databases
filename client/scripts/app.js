@@ -61,22 +61,23 @@ var app = {
       contentType: 'application/json',
       success: function(data) {
         // Don't bother if we have nothing to work with
-        if (!data.results || !data.results.length) { return; }
+        data = JSON.parse(data);
+        if (!data || !data.length) { return; }
 
         // Get the last message
-        var mostRecentMessage = data.results[data.results.length - 1];
+        var mostRecentMessage = data[data.length - 1];
         var displayedRoom = $('.chat span').first().data('roomname');
         app.stopSpinner();
         // Only bother updating the DOM if we have a new message
-        if (mostRecentMessage.objectId !== app.lastMessageId || app.roomname !== displayedRoom) {
+        if (mostRecentMessage.messageID !== app.lastMessageId || app.roomname !== displayedRoom) {
           // Update the UI with the fetched rooms
-          app.populateRooms(data.results);
+          app.populateRooms(data);
 
           // Update the UI with the fetched messages
-          app.populateMessages(data.results, animate);
+          app.populateMessages(data, animate);
 
           // Store the ID of the most recent message
-          app.lastMessageId = mostRecentMessage.objectId;
+          app.lastMessageId = mostRecentMessage.messageID;
         }
       },
       error: function(data) {
@@ -114,9 +115,10 @@ var app = {
     app.$roomSelect.html('<option value="__newRoom">New room...</option><option value="" selected>Lobby</option></select>');
 
     if (results) {
+      console.log(typeof results);
       var rooms = {};
       results.forEach(function(data) {
-        var roomname = data.roomname;
+        var roomname = data.roomName;
         if (roomname && !rooms[roomname]) {
           // Add the room to the select menu
           app.addRoom(roomname);
@@ -140,27 +142,27 @@ var app = {
   },
 
   addMessage: function(data) {
-    if (!data.roomname) {
-      data.roomname = 'lobby';
+    if (!data.roomName) {
+      data.roomName = 'lobby';
     }
 
     // Only add messages that are in our current room
-    if (data.roomname === app.roomname) {
+    if (data.roomName === app.roomname) {
       // Create a div to hold the chats
       var $chat = $('<div class="chat"/>');
 
       // Add in the message data using DOM methods to avoid XSS
       // Store the username in the element's data
       var $username = $('<span class="username"/>');
-      $username.text(data.username + ': ').attr('data-username', data.username).attr('data-roomname', data.roomname).appendTo($chat);
+      $username.text(data.userName + ': ').attr('data-username', data.userName).attr('data-roomname', data.roomName).appendTo($chat);
 
       // Add the friend class
-      if (app.friends[data.username] === true) {
+      if (app.friends[data.userName] === true) {
         $username.addClass('friend');
       }
 
       var $message = $('<br><span/>');
-      $message.text(data.text).appendTo($chat);
+      $message.text(data.messageText).appendTo($chat);
 
       // Add the message to the UI
       app.$chats.append($chat);
@@ -213,7 +215,7 @@ var app = {
   handleSubmit: function(evt) {
     var message = {
       username: app.username,
-      text: app.$message.val(),
+      message: app.$message.val(),
       roomname: app.roomname || 'lobby'
     };
 

@@ -14,7 +14,7 @@ module.exports = {
     post: function (req, res) {
       models.messages.post(req.body, (err, result, field) => {
         if (!err) {
-          res.writeHead(302);
+          res.writeHead(200);
         }
         res.end();
       });
@@ -35,7 +35,7 @@ module.exports = {
         if (!err) {
           models.users.post(JSON.parse(username), (err, result, field) => {
             if (!err) {
-              res.writeHead(302);
+              res.writeHead(200);
             }
             res.end();
           });
