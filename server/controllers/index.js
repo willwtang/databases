@@ -5,18 +5,43 @@ module.exports = {
     get: function (req, res) {
       models.messages.get(function(err, result) {
         if (!err) {
-          res.responseText(result);
+          console.log(result);
+          res.end(JSON.stringify(result));
         }
         res.end();
       });
     }, // a function which handles a get request for all messages
-    post: function (req, res) {} // a function which handles posting a message to the database
+    post: function (req, res) {
+      models.messages.post(req.body, (err, result, field) => {
+        if (!err) {
+          res.writeHead(302);
+        }
+        res.end();
+      });
+    } // a function which handles posting a message to the database
   },
 
   users: {
     // Ditto as above
-    get: function (req, res) {},
-    post: function (req, res) {}
+    get: function (req, res) {
+    },
+    post: function (req, res) {
+      var username = '';
+      req.on('data', function(data) {
+        username += data;
+      });
+
+      req.on('end', function(err) {
+        if (!err) {
+          models.users.post(JSON.parse(username), (err, result, field) => {
+            if (!err) {
+              res.writeHead(302);
+            }
+            res.end();
+          });
+        }
+      });
+    }
   }
 };
 

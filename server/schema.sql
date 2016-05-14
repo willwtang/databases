@@ -20,8 +20,8 @@ CREATE TABLE messages (
   ,messageSentTime TIMESTAMP
   ,roomID_Rooms int
   ,userID_Users int
-  ,FOREIGN KEY (roomID_Rooms) REFERENCES rooms(roomID)
-  ,FOREIGN KEY (userID_Users) REFERENCES users(userID)
+  -- ,FOREIGN KEY (roomID_Rooms) REFERENCES rooms(roomID)
+  -- ,FOREIGN KEY (userID_Users) REFERENCES users(userID)
   ,PRIMARY KEY (messageID)
 );
 
