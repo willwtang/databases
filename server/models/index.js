@@ -31,6 +31,7 @@ module.exports = {
           });
         });
       });
+
     } // a function which can be used to insert a message into the database
   },
 
@@ -40,7 +41,7 @@ module.exports = {
     post: function (body, callback) {
       var userNameInsert = 'INSERT IGNORE INTO users (users.userName) VALUES ("' + body.username + '")';
       console.log(userNameInsert);
-      db.connection.query({sql: userNameInsert, timeout: 40000}, (err, result) => {
+      db.connection.sync().query({sql: userNameInsert, timeout: 40000}, (err, result) => {
         callback(err, result);
       });
 
